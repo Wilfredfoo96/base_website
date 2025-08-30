@@ -1,0 +1,11 @@
+{
+  "project": {
+    "name": "clerk-convex-login"
+  },
+  "team": {
+    "name": "clerk-convex-login"
+  },
+  "production": {
+    "url": "your_convex_production_url_here"
+  }
+}
