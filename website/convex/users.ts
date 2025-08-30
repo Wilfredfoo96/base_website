@@ -1,19 +1,15 @@
-import { query, mutation, v } from 'convex/server'
+import { query, mutation } from './_generated/server'
+import { v } from 'convex/values'
 import { Id } from './_generated/dataModel'
 
 // Query to get all users
 export const getUsers = query({
-  args: {
-    limit: v.optional(v.number()),
-    offset: v.optional(v.number()),
-  },
-  handler: async (ctx, args) => {
-    const { limit = 100, offset = 0 } = args
-    
+  args: {},
+  handler: async (ctx) => {
     const users = await ctx.db
       .query('users')
       .order('desc')
-      .paginate({ numItems: limit, cursor: offset })
+      .collect()
     
     return users
   },

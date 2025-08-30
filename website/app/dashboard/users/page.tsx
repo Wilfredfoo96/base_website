@@ -10,15 +10,16 @@ import { useToast } from '@/components/ui/toast'
 
 interface ConvexUser {
   _id: string
+  _creationTime: number
   clerkId: string
-  firstName: string | null
-  lastName: string | null
+  firstName?: string
+  lastName?: string
   email: string
-  imageUrl: string | null
-  bio: string | null
+  imageUrl?: string
+  bio?: string
   createdAt: number
   updatedAt: number
-  lastSignInAt: number | null
+  lastSignInAt?: number
 }
 
 export default function UsersPage() {
@@ -29,7 +30,7 @@ export default function UsersPage() {
   const toast = useToast()
 
   // Fetch users from Convex
-  const users = useQuery(api.users.getUsers, { limit: 100, offset: 0 })
+  const users = useQuery(api.users.getUsers)
   const deleteUserMutation = useMutation(api.users.deleteUser)
 
   // Sync current user to Convex when component mounts

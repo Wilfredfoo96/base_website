@@ -36,8 +36,6 @@ export async function POST(request: NextRequest) {
           lastName: data.last_name,
           email: data.email_addresses[0]?.email_address || '',
           imageUrl: data.image_url,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
         })
         break
 
@@ -49,7 +47,6 @@ export async function POST(request: NextRequest) {
           lastName: data.last_name,
           email: data.email_addresses[0]?.email_address || '',
           imageUrl: data.image_url,
-          updatedAt: Date.now(),
         })
         break
 
