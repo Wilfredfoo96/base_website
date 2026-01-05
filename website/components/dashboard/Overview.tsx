@@ -1,26 +1,48 @@
+'use client'
+
+import { useQuery } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+
 export function Overview() {
-  return (
-    <div className="h-[300px] flex items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-      <div className="text-center">
-        <svg
-          className="mx-auto h-12 w-12 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-          />
-        </svg>
-        <h3 className="mt-2 text-sm font-semibold text-gray-900">Chart Placeholder</h3>
-        <p className="mt-1 text-sm text-gray-500">
-          This is where your charts and metrics will go
-        </p>
+  const stats = useQuery(api.dashboard.getStats, { timeRange: 'month' })
+
+  if (!stats) {
+    return (
+      <div className="h-[300px] flex items-center justify-center bg-gray-50 rounded-lg">
+        <div className="animate-pulse text-gray-400">Loading chart data...</div>
       </div>
+    )
+  }
+
+  // Prepare chart data
+  const chartData = [
+    {
+      name: 'Delivered',
+      value: stats.orders.delivered,
+    },
+    {
+      name: 'Failed',
+      value: stats.orders.failed,
+    },
+    {
+      name: 'Returned',
+      value: stats.orders.returned,
+    },
+  ]
+
+  return (
+    <div className="h-[300px] w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="value" fill="#3b82f6" />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   )
 }
