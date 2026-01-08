@@ -18,7 +18,17 @@ import { OrderColumn } from './OrderColumn'
 import { OrderDetailModal } from './OrderDetailModal'
 import { OrderFilters } from './OrderFilters'
 import { OrderSearch } from './OrderSearch'
+import { OrderForm } from './OrderForm'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Plus } from 'lucide-react'
 
 type OrderStatus =
   | 'PENDING_VERIFICATION'
@@ -45,6 +55,7 @@ export function OrderBoard() {
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
   const [activeId, setActiveId] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'kanban' | 'list'>('kanban')
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [filters, setFilters] = useState<{
     status?: OrderStatus
     paymentMethod?: 'COD' | 'BANK_TRANSFER'
@@ -151,6 +162,26 @@ export function OrderBoard() {
           filters={filters}
           onChange={setFilters}
         />
+        <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Create Order
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Create New Order</DialogTitle>
+              <DialogDescription>
+                Add a new order to the system. Stock will be deducted automatically.
+              </DialogDescription>
+            </DialogHeader>
+            <OrderForm
+              onSuccess={() => setIsCreateModalOpen(false)}
+              onCancel={() => setIsCreateModalOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
         <Button
           variant="outline"
           onClick={() => setViewMode(viewMode === 'kanban' ? 'list' : 'kanban')}
